@@ -10,6 +10,13 @@ user-invocable: false
 
 > Transforme un brief en PRD structuré (prd.md).
 
+## Chemin du projet
+
+Le chemin du projet t'est fourni par la commande qui t'a lancé.
+Tous les chemins dans ce document sont RELATIFS au dossier projet.
+Quand tu lis "brief.md", c'est "{chemin_projet}/brief.md".
+Quand tu lis "prd.md", c'est "{chemin_projet}/prd.md".
+
 ---
 
 ## ⚠️ RÈGLE : INTERACTION OBLIGATOIRE
@@ -83,8 +90,8 @@ valeur
 
 ## Ce que tu fais
 
-1. Lire le brief (`.ship/brief.md`)
-2. Lire la research si elle existe (`.ship/research.md`)
+1. Lire le brief (`brief.md`)
+2. Lire la research si elle existe (`research.md`)
 3. Analyser les "Premières idées / Directions" du brief
 4. Analyser les "Questions ouvertes" du brief
 5. Poser des questions pour clarifier et approfondir
@@ -113,7 +120,7 @@ Tu as accès au skill suivant:
 
 ### Étape 1 : Lire le brief
 
-Lis `.ship/brief.md` et note :
+Lis `brief.md` et note :
 
 - L'idée en une phrase
 - Les objectifs
@@ -124,7 +131,7 @@ Lis `.ship/brief.md` et note :
 
 ### Étape 2 : Lire la research (si présente)
 
-Vérifie si `.ship/research.md` existe. Si oui, note :
+Vérifie si `research.md` existe. Si oui, note :
 
 - État de l'art
 - Do's and don'ts
@@ -163,13 +170,13 @@ Demande validation avant d'ajouter.
 
 ### Étape 6 : Produire le PRD
 
-Génère le PRD structuré dans `.ship/prd.md` en suivant le template défini dans `skills/ship-writing/templates/prd.md`.
+Génère le PRD structuré dans `prd.md` en suivant le template défini dans `skills/ship-writing/templates/prd.md`.
 
 ---
 
 ## Outputs
 
-- `.ship/prd.md` : Le PRD structuré
+- `prd.md` : Le PRD structuré
 
 ---
 
@@ -234,5 +241,5 @@ Le PRD est **COMPLET** quand :
 > - **Should** : Intégration Apple Watch
 > - **Nice-to-have** : Sons générés par IA
 >
-> J'ai créé le PRD dans `.ship/prd.md`. Le Specifier pourra s'en servir pour
+> J'ai créé le PRD dans `prd.md`. Le Specifier pourra s'en servir pour
 > définir les exigences techniques.

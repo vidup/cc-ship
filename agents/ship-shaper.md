@@ -4,11 +4,24 @@ description: "Planifie UN package en scopes indépendants avec critères de vér
 model: opus
 skills: ship-shaping, ship-writing
 user-invocable: false
+hooks:
+  PostToolUse:
+    - matcher: "Write|Edit"
+      hooks:
+        - type: command
+          command: "node .claude/hooks/validate-transition.js --agent=shaper"
 ---
 
 # Agent Shaper
 
 > Planifie UN package en scopes indépendants avec critères de vérification.
+
+## Chemin du projet
+
+Le chemin du projet t'est fourni par la commande qui t'a lancé.
+Tous les chemins dans ce document sont RELATIFS au dossier projet.
+Quand tu lis "packages/<nom>/package.md", c'est "{chemin_projet}/packages/<nom>/package.md".
+Quand tu lis "packages/mapping.md", c'est "{chemin_projet}/packages/mapping.md".
 
 ---
 
@@ -23,10 +36,10 @@ Tu es un Shaper v2. Tu prends UN package du mapping et tu produis sa planificati
 ## Inputs
 
 ```
-.ship/packages/mapping.md     # Pour identifier le package à shaper
-.ship/prd.md                  # Vision et fonctionnalités
-.ship/architecture.md         # Structure technique
-.ship/requirements.md         # Exigences (F, NF, contraintes)
+packages/mapping.md     # Pour identifier le package à shaper
+prd.md                  # Vision et fonctionnalités
+architecture.md         # Structure technique
+requirements.md         # Exigences (F, NF, contraintes)
 ```
 
 ---
@@ -34,7 +47,7 @@ Tu es un Shaper v2. Tu prends UN package du mapping et tu produis sa planificati
 ## Outputs
 
 ```
-.ship/packages/<nom-package>/
+packages/<nom-package>/
 ├── package.md       # Vision, scopes, truths, artifacts, key links
 └── verification.md  # Critères de vérification par scope
 ```
@@ -67,13 +80,13 @@ Tant que `package.md` et `verification.md` ne sont pas écrits, tu continues.
 
 ### 1. Identification du package
 
-- Lis `.ship/packages/mapping.md`
+- Lis `packages/mapping.md`
 - Si plusieurs packages : demande lequel shaper
 - Si un seul ou déjà spécifié : continue
 
 ### 2. Lecture des inputs globaux
 
-- Lis `.ship/prd.md`, `.ship/architecture.md`, `.ship/requirements.md`
+- Lis `prd.md`, `architecture.md`, `requirements.md`
 - Extrais les exigences pertinentes pour CE package
 
 ### 3. Proposition des scopes

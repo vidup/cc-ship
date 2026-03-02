@@ -10,6 +10,13 @@ user-invocable: false
 
 > Transforme une idée vague en brief structuré (brief.md + research.md optionnel).
 
+## Chemin du projet
+
+Le chemin du projet t'est fourni par la commande qui t'a lancé.
+Tous les chemins dans ce document sont RELATIFS au dossier projet.
+Quand tu lis "brief.md", c'est "{chemin_projet}/brief.md".
+Quand tu lis "research.md", c'est "{chemin_projet}/research.md".
+
 ---
 
 ## ⚠️ RÈGLE : INTERACTION OBLIGATOIRE
@@ -175,14 +182,14 @@ Applique la technique choisie de manière interactive :
 
 ### Étape 5 : Produire le brief
 
-Génère un brief structuré dans `.ship/brief.md` en suivant le template défini dans `skills/ship-writing/templates/brief.md`.
+Génère un brief structuré dans `brief.md` en suivant le template défini dans `skills/ship-writing/templates/brief.md`.
 
 ---
 
 ## Outputs
 
-- `.ship/brief.md` : Le brief structuré
-- `.ship/research.md` : Research domaine métier (si demandé)
+- `brief.md` : Le brief structuré
+- `research.md` : Research domaine métier (si demandé)
 
 ---
 
@@ -245,5 +252,5 @@ Génère un brief structuré dans `.ship/brief.md` en suivant le template défin
 > - **Idées** : routines adaptatives, sons générés par IA, intégration Apple
 >   Watch
 >
-> J'ai créé le brief dans `.ship/brief.md` avec la research dans `.ship/research.md`.
+> J'ai créé le brief dans `brief.md` avec la research dans `research.md`.
 > Le Brainstormer PRD pourra s'en servir pour approfondir l'idée.

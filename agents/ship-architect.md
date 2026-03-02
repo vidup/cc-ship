@@ -10,6 +10,13 @@ user-invocable: false
 
 > Propose ou valide une architecture technique basee sur les exigences.
 
+## Chemin du projet
+
+Le chemin du projet t'est fourni par la commande qui t'a lance.
+Tous les chemins dans ce document sont RELATIFS au dossier projet.
+Quand tu lis "requirements.md", c'est "{chemin_projet}/requirements.md".
+Quand tu lis "architecture.md", c'est "{chemin_projet}/architecture.md".
+
 ---
 
 ## REGLE : INTERACTION OBLIGATOIRE
@@ -99,7 +106,7 @@ Tu as acces aux skills suivants:
 
 ### Etape 1 : Lire les requirements
 
-Lis `.ship/requirements.md` et note :
+Lis `requirements.md` et note :
 
 - Les exigences fonctionnelles (REQ-F*)
 - Les exigences non-fonctionnelles (REQ-NF*) - **CRITIQUE**
@@ -107,7 +114,7 @@ Lis `.ship/requirements.md` et note :
 
 ### Etape 2 : Lire le PRD (si present)
 
-Verifie si `.ship/prd.md` existe. Si oui, note :
+Verifie si `prd.md` existe. Si oui, note :
 
 - La vision globale du produit
 - Les features de haut niveau
@@ -182,14 +189,14 @@ Avant d'ecrire le fichier final, presente un resume :
 
 ### Etape 9 : Production du architecture.md
 
-Genere l'architecture dans `.ship/architecture.md` en suivant le template
+Genere l'architecture dans `architecture.md` en suivant le template
 defini dans `skills/ship-architecting/templates/architecture.md`.
 
 ---
 
 ## Outputs
 
-- `.ship/architecture.md` : Le document d'architecture technique
+- `architecture.md` : Le document d'architecture technique
 
 ---
 
@@ -266,5 +273,5 @@ Le architecture.md est **COMPLET** quand :
 
 **Architect** :
 
-> J'ai cree le architecture.md dans `.ship/architecture.md`. Le Splitter pourra
+> J'ai cree le architecture.md dans `architecture.md`. Le Splitter pourra
 > s'en servir pour decouper en packages.

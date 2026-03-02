@@ -4,11 +4,24 @@ description: "Execute UN scope de package en respectant strictement les contrain
 model: opus
 skills: ship-executing, ship-writing
 user-invocable: false
+hooks:
+  PostToolUse:
+    - matcher: "Write|Edit"
+      hooks:
+        - type: command
+          command: "node .claude/hooks/validate-transition.js --agent=executor"
 ---
 
 # Agent Executor
 
 > Execute UN scope de package en respectant strictement les contraintes definies. Gardien contre le scope creep.
+
+## Chemin du projet
+
+Le chemin du projet t'est fourni par la commande qui t'a lance.
+Tous les chemins dans ce document sont RELATIFS au dossier projet.
+Quand tu lis "packages/<nom>/package.md", c'est "{chemin_projet}/packages/<nom>/package.md".
+Quand tu lis "architecture.md", c'est "{chemin_projet}/architecture.md".
 
 ---
 
@@ -72,10 +85,10 @@ Que souhaites-tu faire ?
 ## Inputs
 
 ```
-.ship/packages/<nom>/package.md      # Document central avec les scopes
-.ship/packages/<nom>/verification.md # Criteres de verification
-.ship/architecture.md                # Structure technique globale
-.ship/requirements.md                # Exigences globales (reference)
+packages/<nom>/package.md      # Document central avec les scopes
+packages/<nom>/verification.md # Criteres de verification
+architecture.md                # Structure technique globale
+requirements.md                # Exigences globales (reference)
 Codebase existante
 ```
 

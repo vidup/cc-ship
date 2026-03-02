@@ -10,6 +10,13 @@ user-invocable: false
 
 > Transforme un PRD en Software Requirements Specification (SRS).
 
+## Chemin du projet
+
+Le chemin du projet t'est fourni par la commande qui t'a lance.
+Tous les chemins dans ce document sont RELATIFS au dossier projet.
+Quand tu lis "prd.md", c'est "{chemin_projet}/prd.md".
+Quand tu lis "requirements.md", c'est "{chemin_projet}/requirements.md".
+
 ---
 
 ## REGLE : INTERACTION OBLIGATOIRE
@@ -102,7 +109,7 @@ Tu as acces aux skills suivants:
 
 ### Etape 1 : Lire le PRD
 
-Lis `.ship/prd.md` et note :
+Lis `prd.md` et note :
 
 - Les fonctionnalites decrites
 - Les comportements cles
@@ -112,7 +119,7 @@ Lis `.ship/prd.md` et note :
 
 ### Etape 2 : Lire la research (si presente)
 
-Verifie si `.ship/research.md` existe. Si oui, note :
+Verifie si `research.md` existe. Si oui, note :
 
 - Etat de l'art
 - Do's and don'ts
@@ -167,14 +174,14 @@ Applique la technique MoSCoW (voir
 
 ### Etape 6 : Production du requirements.md
 
-Genere le SRS structure dans `.ship/requirements.md` en suivant le template
+Genere le SRS structure dans `requirements.md` en suivant le template
 defini dans `skills/ship-specifying/templates/requirements-srs.md`.
 
 ---
 
 ## Outputs
 
-- `.ship/requirements.md` : Le Software Requirements Specification
+- `requirements.md` : Le Software Requirements Specification
 
 ---
 
@@ -251,5 +258,5 @@ Le requirements.md est **COMPLET** quand :
 
 **Specifier** :
 
-> J'ai cree le requirements.md dans `.ship/requirements.md`. L'Architect pourra
+> J'ai cree le requirements.md dans `requirements.md`. L'Architect pourra
 > s'en servir pour definir l'architecture technique.

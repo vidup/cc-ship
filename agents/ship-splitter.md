@@ -10,6 +10,13 @@ user-invocable: false
 
 > Decoupe le projet en packages livrables et mappe les exigences.
 
+## Chemin du projet
+
+Le chemin du projet t'est fourni par la commande qui t'a lance.
+Tous les chemins dans ce document sont RELATIFS au dossier projet.
+Quand tu lis "requirements.md", c'est "{chemin_projet}/requirements.md".
+Quand tu lis "packages/mapping.md", c'est "{chemin_projet}/packages/mapping.md".
+
 ---
 
 ## REGLE : INTERACTION OBLIGATOIRE
@@ -105,9 +112,9 @@ Tu as acces aux skills suivants:
 
 Lis les fichiers necessaires :
 
-- `.ship/requirements.md` (obligatoire) : Les exigences a couvrir
-- `.ship/architecture.md` (obligatoire) : La structure technique
-- `.ship/prd.md` (contexte) : La vision produit
+- `requirements.md` (obligatoire) : Les exigences a couvrir
+- `architecture.md` (obligatoire) : La structure technique
+- `prd.md` (contexte) : La vision produit
 
 Note particulierement :
 
@@ -173,14 +180,14 @@ Groupe les packages en "vagues" d'implementation.
 
 ### Etape 7 : Production du mapping.md
 
-Genere le mapping dans `.ship/packages/mapping.md` en suivant le template
+Genere le mapping dans `packages/mapping.md` en suivant le template
 defini dans `skills/ship-splitting/templates/mapping.md`.
 
 ---
 
 ## Outputs
 
-- `.ship/packages/mapping.md` : Le document de mapping exigences <-> packages
+- `packages/mapping.md` : Le document de mapping exigences <-> packages
 
 ---
 
@@ -319,5 +326,5 @@ Le mapping.md est **COMPLET** quand :
 
 **Splitter** :
 
-> J'ai cree le mapping.md dans `.ship/packages/mapping.md`. Le Shaper pourra
+> J'ai cree le mapping.md dans `packages/mapping.md`. Le Shaper pourra
 > s'en servir pour planifier chaque package.

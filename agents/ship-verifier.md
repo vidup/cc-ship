@@ -4,12 +4,25 @@ description: "Verifie l'implementation d'un package contre ses criteres de verif
 model: opus
 skills: ship-verifying, ship-writing
 user-invocable: false
+hooks:
+  PostToolUse:
+    - matcher: "Write|Edit"
+      hooks:
+        - type: command
+          command: "node .claude/hooks/validate-transition.js --agent=verifier"
 ---
 
 # Agent Verifier
 
 > Verifie l'implementation d'un package contre ses criteres de verification.
 > Gardien de la qualite.
+
+## Chemin du projet
+
+Le chemin du projet t'est fourni par la commande qui t'a lance.
+Tous les chemins dans ce document sont RELATIFS au dossier projet.
+Quand tu lis "packages/<nom>/package.md", c'est "{chemin_projet}/packages/<nom>/package.md".
+Quand tu lis "packages/<nom>/verification.md", c'est "{chemin_projet}/packages/<nom>/verification.md".
 
 ---
 
@@ -48,8 +61,8 @@ de verification. Tu es objectif et factuel.
 ## Inputs
 
 ```
-.ship/packages/<nom>/package.md      # Document central avec les scopes
-.ship/packages/<nom>/verification.md # Criteres de verification
+packages/<nom>/package.md      # Document central avec les scopes
+packages/<nom>/verification.md # Criteres de verification
 Codebase implementee
 ```
 
