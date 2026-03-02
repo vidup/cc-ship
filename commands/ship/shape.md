@@ -9,11 +9,20 @@ Lance l'agent ship-shaper pour planifier UN package en scopes indépendants avec
 
 ## Instructions
 
+### Résolution du projet (PREMIÈRE ÉTAPE)
+
+1. Lire `cc-ship.json` à la racine du repo
+2. Résoudre le chemin : `{projectsDir}/{currentProject}/`
+3. Si `cc-ship.json` n'existe pas OU `currentProject` est null → ERREUR : "Lance `/ship:init` ou `/ship:next` d'abord pour initialiser un projet."
+4. Utiliser ce chemin partout au lieu de `.ship/`
+
+### Lancement de l'agent
+
 Tu dois lancer l'agent `ship-shaper` en utilisant le tool Task avec les paramètres suivants:
 
 ```
 subagent_type: ship-shaper
-prompt: [Le nom du package à shaper ou "Demande quel package shaper"]
+prompt: "Le chemin du projet est {projectPath}. [Le nom du package à shaper ou 'Demande quel package shaper']"
 ```
 
 ## Prérequis
@@ -22,14 +31,14 @@ Avant de lancer l'agent, vérifie que ces fichiers existent :
 
 | Fichier | Obligatoire | Créé par |
 |---------|-------------|----------|
-| `.ship/packages/mapping.md` | Oui | splitter |
-| `.ship/prd.md` | Oui | brainstormer-prd |
-| `.ship/architecture.md` | Oui | architect |
-| `.ship/requirements.md` | Oui | specifier |
+| `{projectPath}/packages/mapping.md` | Oui | splitter |
+| `{projectPath}/prd.md` | Oui | brainstormer-prd |
+| `{projectPath}/architecture.md` | Oui | architect |
+| `{projectPath}/requirements.md` | Oui | specifier |
 
 Si un fichier manque, indique à l'utilisateur quelle commande lancer :
 - Pas de mapping.md → `/ship:split`
-- Pas de prd.md → `/ship:brainstorm-prd`
+- Pas de prd.md → `/ship:prd`
 - Pas d'architecture.md → `/ship:architect`
 - Pas de requirements.md → `/ship:specify`
 
@@ -84,7 +93,7 @@ Shape le package "auth" spécifiquement.
 
 ## Output
 
-Le package sera planifié dans `.ship/packages/<nom-package>/` avec :
+Le package sera planifié dans `{projectPath}/packages/<nom-package>/` avec :
 - `package.md` : Vision, scopes, truths, artifacts, key links
 - `verification.md` : Critères de vérification par scope
 

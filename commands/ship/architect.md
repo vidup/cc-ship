@@ -9,11 +9,20 @@ Definit l'architecture technique basee sur les requirements.
 
 ## Instructions
 
+### Resolution du projet (PREMIERE ETAPE)
+
+1. Lire `cc-ship.json` a la racine du repo
+2. Resoudre le chemin : `{projectsDir}/{currentProject}/`
+3. Si `cc-ship.json` n'existe pas OU `currentProject` est null → ERREUR : "Lance `/ship:init` ou `/ship:next` d'abord pour initialiser un projet."
+4. Utiliser ce chemin partout au lieu de `.ship/`
+
+### Lancement de l'agent
+
 Tu dois lancer l'agent `ship-architect` en utilisant le tool Task avec les parametres suivants:
 
 ```
 subagent_type: ship-architect
-prompt: [Le contexte de l'utilisateur ou "Propose une architecture basee sur les requirements"]
+prompt: "Le chemin du projet est {projectPath}. [Le contexte de l'utilisateur ou 'Propose une architecture basee sur les requirements']"
 ```
 
 ## Syntaxe
@@ -26,13 +35,13 @@ prompt: [Le contexte de l'utilisateur ou "Propose une architecture basee sur les
 
 ## Prerequis
 
-Un requirements.md doit exister dans `.ship/requirements.md`.
+Un requirements.md doit exister dans `{projectPath}/requirements.md`.
 
 **Si aucun requirements.md n'existe** :
-> "Je ne trouve pas de requirements dans `.ship/requirements.md`. Lance d'abord `/ship:specify` pour creer les requirements, puis reviens ici."
+> "Je ne trouve pas de requirements dans `{projectPath}/requirements.md`. Lance d'abord `/ship:specify` pour creer les requirements, puis reviens ici."
 
 **Si le PRD n'existe pas** :
-> "Note: Je ne trouve pas de PRD dans `.ship/prd.md`. Je vais travailler uniquement avec les requirements."
+> "Note: Je ne trouve pas de PRD dans `{projectPath}/prd.md`. Je vais travailler uniquement avec les requirements."
 
 ## Comportement de relais (IMPORTANT)
 
@@ -56,7 +65,7 @@ Quand l'agent te retourne une question pour l'utilisateur :
 
 ## Comportement attendu
 
-1. Verifier que `.ship/requirements.md` existe
+1. Verifier que `{projectPath}/requirements.md` existe
 2. L'agent va:
    - Lire le requirements.md et le PRD (si present)
    - Analyser la codebase existante
@@ -65,7 +74,7 @@ Quand l'agent te retourne une question pour l'utilisateur :
    - Proposer ou valider l'architecture
    - Justifier les choix techniques
    - Identifier les risques et mitigations
-   - Produire l'architecture dans `.ship/architecture.md`
+   - Produire l'architecture dans `{projectPath}/architecture.md`
 
 ## Gestion des flags
 
@@ -89,8 +98,8 @@ Passe ce contexte a l'agent : "L'utilisateur veut valider une architecture qu'il
 
 ## Output
 
-**Fichier genere** :
-- `.ship/architecture.md` : Le document d'architecture technique
+**Fichier genere** (dans le dossier projet) :
+- `architecture.md` : Le document d'architecture technique
 
 **Structure du architecture.md** :
 - Vue d'ensemble (type d'architecture, justification)

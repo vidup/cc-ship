@@ -9,46 +9,53 @@ Affiche l'état actuel du projet ship et recommande la prochaine étape.
 
 ## Instructions
 
+### Résolution du projet (PREMIÈRE ÉTAPE)
+
+1. Lire `cc-ship.json` à la racine du repo
+2. Résoudre le chemin : `{projectsDir}/{currentProject}/`
+3. Si `cc-ship.json` n'existe pas OU `currentProject` est null → ERREUR : "Lance `/ship:init` ou `/ship:next` d'abord pour initialiser un projet."
+4. Utiliser ce chemin partout au lieu de `.ship/`
+
 ### Étape 1 : Vérifier les fichiers globaux
 
 Vérifie l'existence de chaque fichier dans l'ordre:
 
-1. `.ship/` - Le dossier ship existe-t-il?
-2. `.ship/brief.md` - Brief du projet (output brainstormer)
-3. `.ship/research.md` - Recherche domaine (optionnel)
-4. `.ship/prd.md` - Product Requirements Document
-5. `.ship/requirements.md` - Spécifications (SRS)
-6. `.ship/architecture.md` - Architecture technique
-7. `.ship/packages/mapping.md` - Mapping des packages
+1. `{projectPath}/` - Le dossier projet existe-t-il?
+2. `{projectPath}/brief.md` - Brief du projet (output brainstormer)
+3. `{projectPath}/research.md` - Recherche domaine (optionnel)
+4. `{projectPath}/prd.md` - Product Requirements Document
+5. `{projectPath}/requirements.md` - Spécifications (SRS)
+6. `{projectPath}/architecture.md` - Architecture technique
+7. `{projectPath}/packages/mapping.md` - Mapping des packages
 
 ### Étape 2 : Analyser les packages
 
 Si `mapping.md` existe, lire son contenu pour identifier les packages.
 
 Pour chaque package listé:
-1. Vérifier si le dossier `.ship/packages/<nom>/` existe
+1. Vérifier si le dossier `{projectPath}/packages/<nom>/` existe
 2. Lire le front-matter de `package.md` pour obtenir le status et current_scope
 
 ### Algorithme de détection
 
 ```
-1. SI .ship/ n'existe pas
+1. SI {projectPath}/ n'existe pas
    → État: "Non initialisé"
    → Recommandation: /ship:brainstorm
 
-2. SI .ship/brief.md n'existe pas
+2. SI {projectPath}/brief.md n'existe pas
    → Recommandation: /ship:brainstorm
 
-3. SI .ship/prd.md n'existe pas
+3. SI {projectPath}/prd.md n'existe pas
    → Recommandation: /ship:prd
 
-4. SI .ship/requirements.md n'existe pas
+4. SI {projectPath}/requirements.md n'existe pas
    → Recommandation: /ship:specify
 
-5. SI .ship/architecture.md n'existe pas
+5. SI {projectPath}/architecture.md n'existe pas
    → Recommandation: /ship:architect
 
-6. SI .ship/packages/mapping.md n'existe pas
+6. SI {projectPath}/packages/mapping.md n'existe pas
    → Recommandation: /ship:split
 
 7. SINON analyser les packages par leur front-matter

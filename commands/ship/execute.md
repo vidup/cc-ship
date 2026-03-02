@@ -9,11 +9,20 @@ Lance l'agent ship-executor pour implementer UN scope d'un package en respectant
 
 ## Instructions
 
+### Resolution du projet (PREMIERE ETAPE)
+
+1. Lire `cc-ship.json` a la racine du repo
+2. Resoudre le chemin : `{projectsDir}/{currentProject}/`
+3. Si `cc-ship.json` n'existe pas OU `currentProject` est null → ERREUR : "Lance `/ship:init` ou `/ship:next` d'abord pour initialiser un projet."
+4. Utiliser ce chemin partout au lieu de `.ship/`
+
+### Lancement de l'agent
+
 Tu dois lancer l'agent `ship-executor` en utilisant le tool Task avec les parametres suivants:
 
 ```
 subagent_type: ship-executor
-prompt: [Le package et/ou scope a executer]
+prompt: "Le chemin du projet est {projectPath}. [Le package et/ou scope a executer]"
 ```
 
 ## Prerequis
@@ -22,10 +31,10 @@ Avant de lancer l'agent, verifie que ces fichiers existent :
 
 | Fichier | Obligatoire | Cree par |
 |---------|-------------|----------|
-| `.ship/packages/<nom>/package.md` | Oui | shaper |
-| `.ship/packages/<nom>/verification.md` | Oui | shaper |
-| `.ship/architecture.md` | Oui | architect |
-| `.ship/requirements.md` | Oui | specifier |
+| `{projectPath}/packages/<nom>/package.md` | Oui | shaper |
+| `{projectPath}/packages/<nom>/verification.md` | Oui | shaper |
+| `{projectPath}/architecture.md` | Oui | architect |
+| `{projectPath}/requirements.md` | Oui | specifier |
 
 ### Verification du status
 
@@ -91,16 +100,10 @@ Quand l'agent te retourne une question pour l'utilisateur :
 Execute le scope courant du package actif (detecte automatiquement).
 
 ```
-/ship:execute .ship/packages/auth/package.md
+/ship:execute auth
 ```
 
-Execute le scope courant du package specifie.
-
-```
-/ship:execute .ship/packages/auth/package.md scope-2
-```
-
-Execute un scope specifique du package.
+Execute le scope courant du package "auth".
 
 ```
 /ship:execute auth

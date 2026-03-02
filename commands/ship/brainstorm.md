@@ -9,11 +9,20 @@ Lance l'agent ship-brainstormer pour transformer une idée vague en brief struct
 
 ## Instructions
 
+### Résolution du projet (PREMIÈRE ÉTAPE)
+
+1. Lire `cc-ship.json` à la racine du repo
+2. Résoudre le chemin : `{projectsDir}/{currentProject}/`
+3. Si `cc-ship.json` n'existe pas OU `currentProject` est null → ERREUR : "Lance `/ship:init` ou `/ship:next` d'abord pour initialiser un projet."
+4. Utiliser ce chemin partout au lieu de `.ship/`
+
+### Lancement de l'agent
+
 Tu dois lancer l'agent `ship-brainstormer` en utilisant le tool Task avec les paramètres suivants:
 
 ```
 subagent_type: ship-brainstormer
-prompt: [Le contexte de l'utilisateur ou "Démarre une nouvelle session de brainstorming"]
+prompt: "Le chemin du projet est {projectPath}. [Le contexte de l'utilisateur ou 'Démarre une nouvelle session de brainstorming']"
 ```
 
 ## ⚠️ Comportement de relais (IMPORTANT)
@@ -44,7 +53,7 @@ Quand l'agent te retourne une question pour l'utilisateur :
    - Proposer une recherche sur le domaine (optionnel)
    - Recommander une technique de brainstorming
    - Mener une session interactive
-   - Produire un brief structuré dans `.ship/brief.md`
+   - Produire un brief structuré dans `{projectPath}/brief.md`
 
 ## Exemple d'utilisation
 
@@ -60,9 +69,9 @@ ou simplement:
 
 ## Output
 
-**Fichiers générés** :
-- `.ship/brief.md` : Le brief structuré
-- `.ship/research.md` : Research domaine métier (optionnel, si demandé)
+**Fichiers générés** (dans le dossier projet) :
+- `brief.md` : Le brief structuré
+- `research.md` : Research domaine métier (optionnel, si demandé)
 
 **Structure du brief** :
 - L'idée en une phrase
@@ -72,4 +81,4 @@ ou simplement:
 - Contraintes connues
 - Premières idées / Directions
 - Questions ouvertes
-- Research (référence vers `.ship/research.md` si effectuée)
+- Research (référence vers `research.md` si effectuée)

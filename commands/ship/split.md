@@ -9,11 +9,20 @@ Decoupe le projet en packages livrables et cree le mapping exigences <-> package
 
 ## Instructions
 
+### Resolution du projet (PREMIERE ETAPE)
+
+1. Lire `cc-ship.json` a la racine du repo
+2. Resoudre le chemin : `{projectsDir}/{currentProject}/`
+3. Si `cc-ship.json` n'existe pas OU `currentProject` est null → ERREUR : "Lance `/ship:init` ou `/ship:next` d'abord pour initialiser un projet."
+4. Utiliser ce chemin partout au lieu de `.ship/`
+
+### Lancement de l'agent
+
 Tu dois lancer l'agent `ship-splitter` en utilisant le tool Task avec les parametres suivants:
 
 ```
 subagent_type: ship-splitter
-prompt: [Le contexte de l'utilisateur ou "Decoupe le projet en packages livrables"]
+prompt: "Le chemin du projet est {projectPath}. [Le contexte de l'utilisateur ou 'Decoupe le projet en packages livrables']"
 ```
 
 ## Syntaxe
@@ -26,18 +35,18 @@ prompt: [Le contexte de l'utilisateur ou "Decoupe le projet en packages livrable
 
 Les fichiers suivants doivent exister :
 
-- `.ship/requirements.md` (obligatoire)
-- `.ship/architecture.md` (obligatoire)
-- `.ship/prd.md` (recommande)
+- `{projectPath}/requirements.md` (obligatoire)
+- `{projectPath}/architecture.md` (obligatoire)
+- `{projectPath}/prd.md` (recommande)
 
 **Si requirements.md n'existe pas** :
-> "Je ne trouve pas de requirements dans `.ship/requirements.md`. Lance d'abord `/ship:specify` pour creer les requirements, puis reviens ici."
+> "Je ne trouve pas de requirements dans `{projectPath}/requirements.md`. Lance d'abord `/ship:specify` pour creer les requirements, puis reviens ici."
 
 **Si architecture.md n'existe pas** :
-> "Je ne trouve pas d'architecture dans `.ship/architecture.md`. Lance d'abord `/ship:architect` pour definir l'architecture, puis reviens ici."
+> "Je ne trouve pas d'architecture dans `{projectPath}/architecture.md`. Lance d'abord `/ship:architect` pour definir l'architecture, puis reviens ici."
 
 **Si le PRD n'existe pas** :
-> "Note: Je ne trouve pas de PRD dans `.ship/prd.md`. Je vais travailler avec les requirements et l'architecture uniquement."
+> "Note: Je ne trouve pas de PRD dans `{projectPath}/prd.md`. Je vais travailler avec les requirements et l'architecture uniquement."
 
 ## Comportement de relais (IMPORTANT)
 
@@ -61,7 +70,7 @@ Quand l'agent te retourne une question pour l'utilisateur :
 
 ## Comportement attendu
 
-1. Verifier que `.ship/requirements.md` et `.ship/architecture.md` existent
+1. Verifier que `{projectPath}/requirements.md` et `{projectPath}/architecture.md` existent
 2. L'agent va:
    - Lire les requirements, architecture et PRD (si present)
    - Identifier les frontieres naturelles
@@ -70,7 +79,7 @@ Quand l'agent te retourne une question pour l'utilisateur :
    - Creer le mapping exigences <-> packages
    - Identifier les dependances entre packages
    - Suggerer l'ordre d'implementation
-   - Produire le mapping dans `.ship/packages/mapping.md`
+   - Produire le mapping dans `{projectPath}/packages/mapping.md`
 
 ## Exemple d'utilisation
 
@@ -80,8 +89,8 @@ Quand l'agent te retourne une question pour l'utilisateur :
 
 ## Output
 
-**Fichier genere** :
-- `.ship/packages/mapping.md` : Le document de mapping
+**Fichier genere** (dans le dossier projet) :
+- `packages/mapping.md` : Le document de mapping
 
 **Structure du mapping.md** :
 - Vue d'ensemble (nombre de packages, approche de decoupage)

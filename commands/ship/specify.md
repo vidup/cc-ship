@@ -9,19 +9,28 @@ Transforme un PRD existant en Software Requirements Specification (SRS) formel.
 
 ## Instructions
 
+### Resolution du projet (PREMIERE ETAPE)
+
+1. Lire `cc-ship.json` a la racine du repo
+2. Resoudre le chemin : `{projectsDir}/{currentProject}/`
+3. Si `cc-ship.json` n'existe pas OU `currentProject` est null → ERREUR : "Lance `/ship:init` ou `/ship:next` d'abord pour initialiser un projet."
+4. Utiliser ce chemin partout au lieu de `.ship/`
+
+### Lancement de l'agent
+
 Tu dois lancer l'agent `ship-specifier` en utilisant le tool Task avec les parametres suivants:
 
 ```
 subagent_type: ship-specifier
-prompt: [Le contexte de l'utilisateur ou "Transforme le PRD en requirements"]
+prompt: "Le chemin du projet est {projectPath}. [Le contexte de l'utilisateur ou 'Transforme le PRD en requirements']"
 ```
 
 ## Prerequis
 
-Un PRD doit exister dans `.ship/prd.md`.
+Un PRD doit exister dans `{projectPath}/prd.md`.
 
 **Si aucun PRD n'existe** :
-> "Je ne trouve pas de PRD dans `.ship/prd.md`. Lance d'abord `/ship:prd` pour creer un PRD, puis reviens ici."
+> "Je ne trouve pas de PRD dans `{projectPath}/prd.md`. Lance d'abord `/ship:prd` pour creer un PRD, puis reviens ici."
 
 ## Comportement de relais (IMPORTANT)
 
@@ -45,13 +54,13 @@ Quand l'agent te retourne une question pour l'utilisateur :
 
 ## Comportement attendu
 
-1. Verifier que `.ship/prd.md` existe
+1. Verifier que `{projectPath}/prd.md` existe
 2. L'agent va:
    - Lire le PRD et la research (si presente)
    - Extraire les exigences fonctionnelles, non-fonctionnelles et contraintes
    - Poser des questions pour clarifier les ambiguites
    - Prioriser avec MoSCoW (Must/Should/Could/Won't)
-   - Produire un SRS structure dans `.ship/requirements.md`
+   - Produire un SRS structure dans `{projectPath}/requirements.md`
 
 ## Exemple d'utilisation
 
@@ -61,8 +70,8 @@ Quand l'agent te retourne une question pour l'utilisateur :
 
 ## Output
 
-**Fichier genere** :
-- `.ship/requirements.md` : Le Software Requirements Specification
+**Fichier genere** (dans le dossier projet) :
+- `requirements.md` : Le Software Requirements Specification
 
 **Structure du requirements.md** :
 - Meta (version, date, source, statut)

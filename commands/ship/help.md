@@ -46,6 +46,7 @@ l'interaction avec l'humain.
 
 | Commande       | Description                                             |
 | -------------- | ------------------------------------------------------- |
+| `/ship:init`   | Initialise un nouveau projet ship                       |
 | `/ship:next`   | Détecte l'état et propose l'étape suivante (interactif) |
 | `/ship:status` | Affiche l'état du projet                                |
 | `/ship:help`   | Affiche cette aide                                      |
@@ -68,18 +69,22 @@ BRAINSTORM → PRD → SPECIFY → ARCHITECT → SPLIT
 ## Structure des fichiers
 
 ```
-.ship/
-├── brief.md                      # Output brainstormer
-├── research.md                   # Output brainstormer (optionnel)
-├── prd.md                        # Output brainstormer-prd
-├── requirements.md               # Output specifier (SRS)
-├── architecture.md               # Output architect
-└── packages/
-    ├── mapping.md                # Output splitter
-    └── <nom>/
-        ├── package.md            # Output shaper
-        └── verification.md       # Output shaper
+cc-ship.json                      # Configuration multi-projet
+{projectsDir}/
+└── {currentProject}/             # Dossier projet actif
+    ├── brief.md                  # Output brainstormer
+    ├── research.md               # Output brainstormer (optionnel)
+    ├── prd.md                    # Output brainstormer-prd
+    ├── requirements.md           # Output specifier (SRS)
+    ├── architecture.md           # Output architect
+    └── packages/
+        ├── mapping.md            # Output splitter
+        └── <nom>/
+            ├── package.md        # Output shaper
+            └── verification.md   # Output shaper
 ```
+
+Par défaut, `projectsDir` = `.ship`. Configurable via `cc-ship.json`.
 
 ---
 
@@ -100,6 +105,7 @@ BRAINSTORM → PRD → SPECIFY → ARCHITECT → SPLIT
 
 ## Pour commencer
 
+- `/ship:init mon-projet` pour initialiser un nouveau projet
 - `/ship:next` pour démarrer ou reprendre le workflow
-- `/ship:brainstorm` pour démarrer un nouveau projet
+- `/ship:brainstorm` pour démarrer le brainstorming
 - `/ship:status` pour voir où tu en es

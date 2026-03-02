@@ -9,11 +9,20 @@ Lance l'agent ship-verifier pour verifier l'implementation d'un scope contre ses
 
 ## Instructions
 
+### Resolution du projet (PREMIERE ETAPE)
+
+1. Lire `cc-ship.json` a la racine du repo
+2. Resoudre le chemin : `{projectsDir}/{currentProject}/`
+3. Si `cc-ship.json` n'existe pas OU `currentProject` est null → ERREUR : "Lance `/ship:init` ou `/ship:next` d'abord pour initialiser un projet."
+4. Utiliser ce chemin partout au lieu de `.ship/`
+
+### Lancement de l'agent
+
 Tu dois lancer l'agent `ship-verifier` en utilisant le tool Task avec les parametres suivants:
 
 ```
 subagent_type: ship-verifier
-prompt: [Le package et/ou scope a verifier]
+prompt: "Le chemin du projet est {projectPath}. [Le package et/ou scope a verifier]"
 ```
 
 ## Prerequis
@@ -22,8 +31,8 @@ Avant de lancer l'agent, verifie que ces fichiers existent :
 
 | Fichier | Obligatoire | Cree par |
 |---------|-------------|----------|
-| `.ship/packages/<nom>/package.md` | Oui | shaper |
-| `.ship/packages/<nom>/verification.md` | Oui | shaper |
+| `{projectPath}/packages/<nom>/package.md` | Oui | shaper |
+| `{projectPath}/packages/<nom>/verification.md` | Oui | shaper |
 
 ### Verification du status
 
@@ -90,16 +99,10 @@ Quand l'agent te retourne une question pour l'utilisateur (verification manuelle
 Verifie le scope courant du package actif (detecte automatiquement).
 
 ```
-/ship:verify .ship/packages/auth/package.md
-```
-
-Verifie le scope courant du package specifie.
-
-```
 /ship:verify auth
 ```
 
-Raccourci : verifie le scope courant du package "auth".
+Verifie le scope courant du package "auth".
 
 ## Output
 

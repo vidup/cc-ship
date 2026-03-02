@@ -9,18 +9,33 @@ Orchestre le workflow ship complet avec validation humaine entre chaque étape.
 
 ## Instructions
 
+### Étape 0 : Résolution du projet (PREMIÈRE ÉTAPE)
+
+1. Lire `cc-ship.json` à la racine du repo
+   - **Si n'existe pas** → demander `projectsDir` via `AskUserQuestion` (proposer `.ship` par défaut) → créer `cc-ship.json`
+
+2. Résoudre le projet :
+   - **Si argument fourni** (ex: `/ship:next mon-jeu`) → setter `currentProject` dans `cc-ship.json`, continuer
+   - **Si pas d'argument ET `currentProject` existe** → l'utiliser SILENCIEUSEMENT (pas de confirmation)
+   - **Si pas d'argument ET `currentProject` est null** → scanner `projectsDir`, lister les projets disponibles, demander lequel via `AskUserQuestion`. Si aucun projet → proposer `/ship:init`
+
+3. Le chemin projet résolu = `{projectsDir}/{currentProject}/`
+   **Utiliser CE chemin partout à la place de `.ship/`**
+
 ### Étape 1 : Détecter l'état actuel
 
 Utilise le même algorithme que `/ship:status` pour détecter l'état du projet.
 
 #### Fichiers à vérifier (dans l'ordre)
 
-1. `.ship/` - Dossier ship
-2. `.ship/brief.md` - Brief (output brainstorm)
-3. `.ship/prd.md` - PRD (output prd)
-4. `.ship/requirements.md` - Spécifications (output specify)
-5. `.ship/architecture.md` - Architecture (output architect)
-6. `.ship/packages/mapping.md` - Mapping (output split)
+1. `{projectPath}/` - Dossier projet
+2. `{projectPath}/brief.md` - Brief (output brainstorm)
+3. `{projectPath}/prd.md` - PRD (output prd)
+4. `{projectPath}/requirements.md` - Spécifications (output specify)
+5. `{projectPath}/architecture.md` - Architecture (output architect)
+6. `{projectPath}/packages/mapping.md` - Mapping (output split)
+
+Où `{projectPath}` = `{projectsDir}/{currentProject}`
 
 #### Pour les packages
 
@@ -37,15 +52,15 @@ current_scope: <nom-du-scope>
 
 ```
 function getNextStep(state):
-    if not exists(.ship/brief.md):
+    if not exists({projectPath}/brief.md):
         return 'brainstorm'
-    if not exists(.ship/prd.md):
+    if not exists({projectPath}/prd.md):
         return 'prd'
-    if not exists(.ship/requirements.md):
+    if not exists({projectPath}/requirements.md):
         return 'specify'
-    if not exists(.ship/architecture.md):
+    if not exists({projectPath}/architecture.md):
         return 'architect'
-    if not exists(.ship/packages/mapping.md):
+    if not exists({projectPath}/packages/mapping.md):
         return 'split'
 
     # Phase packages : boucle shape → execute → verify
@@ -96,7 +111,12 @@ Reposer la question de continuation.
 
 ### Étape 4 : Exécuter l'étape
 
-Lance l'agent approprié via le tool `Task`:
+Lance l'agent approprié via le tool `Task`.
+
+**IMPORTANT** : Quand tu lances un agent, fournis-lui le chemin du projet résolu dans le prompt. Exemple :
+```
+"Le chemin du projet est {projectPath}. Transforme le brief en PRD."
+```
 
 | Étape | Agent | Output |
 |-------|-------|--------|
@@ -183,7 +203,7 @@ Lequel voulez-vous traiter en premier?
 
 ### Reprise après interruption
 
-Les fichiers `.ship/` persistent. Au relancement:
+Les fichiers du projet persistent. Au relancement:
 1. Détecter l'état via les fichiers et front-matter
 2. Proposer de reprendre depuis l'étape en cours
 3. L'utilisateur peut choisir de recommencer une étape
@@ -208,6 +228,7 @@ Le projet ship est complet. Bravo!
 Utilisateur: /ship:next
 
 Next: "Je détecte:
+- Projet actif: mon-jeu (.ship/mon-jeu/)
 - brief.md existe (brainstorm fait)
 - prd.md existe (prd fait)
 - requirements.md n'existe pas
@@ -217,7 +238,7 @@ Continuer?"
 
 Utilisateur: "Oui"
 
-Next: [Lance ship-specifier via Task]
+Next: [Lance ship-specifier via Task avec le chemin du projet]
 ...
 "Specify terminé. requirements.md créé.
 
