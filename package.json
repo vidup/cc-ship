@@ -1,6 +1,6 @@
 {
   "name": "cc-ship",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Architecture 3 couches pour Claude Code: Commands -> Agents -> Skills",
   "bin": {
     "cc-ship": "bin/install.js"
