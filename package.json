@@ -25,7 +25,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/vdstack/cc-ship"
+    "url": "https://github.com/vidup/cc-ship"
   },
   "engines": {
     "node": ">=14.0.0"
