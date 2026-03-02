@@ -22,6 +22,7 @@ Structure installée:
   commands/ship/        Commandes de workflow (/ship:xxx)
   agents/                Agents spécialisés
   skills/                Connaissances et techniques réutilisables
+  hooks/                 Hooks de validation (frontmatter, transitions)
 `);
   process.exit(0);
 }
@@ -38,7 +39,7 @@ console.log(`\n🚀 Installation de cc-ship...`);
 console.log(`   Destination: ${targetDir}\n`);
 
 // Directories to copy
-const dirsToInstall = ['commands', 'agents', 'skills'];
+const dirsToInstall = ['commands', 'agents', 'skills', 'hooks'];
 
 // Ensure target directory exists
 if (!fs.existsSync(targetDir)) {
@@ -92,16 +93,41 @@ for (const dir of dirsToInstall) {
   }
 }
 
+// Merge hooks settings into settings.local.json
+const hooksSettingsPath = path.join(sourceDir, 'hooks-settings.json');
+if (fs.existsSync(hooksSettingsPath)) {
+  const settingsPath = path.join(targetDir, 'settings.local.json');
+  let settings = {};
+
+  if (fs.existsSync(settingsPath)) {
+    try {
+      settings = JSON.parse(fs.readFileSync(settingsPath, 'utf-8'));
+    } catch {
+      console.log(`  ⚠ settings.local.json existant non parseable, hooks non injectés`);
+      settings = null;
+    }
+  }
+
+  if (settings !== null) {
+    const hooksSettings = JSON.parse(fs.readFileSync(hooksSettingsPath, 'utf-8'));
+    settings.hooks = hooksSettings.hooks;
+    fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + '\n');
+    console.log(`\n🔧 Hooks injectés dans settings.local.json`);
+  }
+}
+
 // Summary
 console.log(`
 ✅ Installation terminée!
 
 Commandes disponibles dans Claude Code:
   /ship:help         Liste des commandes ship
-  /ship:brainstorm   Lance une session de brainstorming
+  /ship:init         Initialise un nouveau projet
+  /ship:next         Démarre ou reprend le workflow
   /ship:status       Affiche l'état du projet
 
 Pour commencer:
   1. Ouvre Claude Code dans ce répertoire
-  2. Tape /ship:help pour voir les commandes disponibles
+  2. Tape /ship:init mon-projet pour initialiser un projet
+  3. Tape /ship:next pour lancer le workflow
 `);

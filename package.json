@@ -9,7 +9,9 @@
     "bin",
     "commands",
     "agents",
-    "skills"
+    "skills",
+    "hooks",
+    "hooks-settings.json"
   ],
   "keywords": [
     "claude",
