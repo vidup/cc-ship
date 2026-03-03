@@ -1,0 +1,9 @@
+{
+  "name": "ship",
+  "description": "Architecture 3 couches pour Claude Code: Commands -> Agents -> Skills",
+  "version": "0.1.0",
+  "author": { "name": "vdstack" },
+  "repository": "https://github.com/vdstack/cc-ship",
+  "license": "MIT",
+  "keywords": ["claude-code-plugin", "workflow", "brainstorming", "shaping", "productivity"]
+}

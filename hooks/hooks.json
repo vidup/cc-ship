@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node .claude/hooks/validate-frontmatter.js"
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/validate-frontmatter.js\""
           }
         ]
       }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node .claude/hooks/check-agent-completion.js"
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/check-agent-completion.js\""
           }
         ]
       }

@@ -18,14 +18,20 @@ Usage:
   npx cc-ship --global     Installe dans ~/.claude/ (global)
   npx cc-ship --help       Affiche cette aide
 
-Structure installée:
+Mode recommande:
+  claude plugin install     Plugin Claude Code (mise a jour automatique)
+
+Structure installee:
   commands/ship/        Commandes de workflow (/ship:xxx)
-  agents/                Agents spécialisés
-  skills/                Connaissances et techniques réutilisables
+  agents/                Agents specialises
+  skills/                Connaissances et techniques reutilisables
   hooks/                 Hooks de validation (frontmatter, transitions)
 `);
   process.exit(0);
 }
+
+// Plugin root placeholder used in source files
+const PLUGIN_ROOT_VAR = '${CLAUDE_PLUGIN_ROOT}';
 
 // Determine target directory
 const targetDir = isGlobal
@@ -35,24 +41,74 @@ const targetDir = isGlobal
 // Source directory (where the package is installed)
 const sourceDir = path.join(__dirname, '..');
 
-console.log(`\n🚀 Installation de cc-ship...`);
+console.log(`\n🚀 Installation de cc-ship (standalone mode)...`);
 console.log(`   Destination: ${targetDir}\n`);
-
-// Directories to copy
-const dirsToInstall = ['commands', 'agents', 'skills', 'hooks'];
 
 // Ensure target directory exists
 if (!fs.existsSync(targetDir)) {
   fs.mkdirSync(targetDir, { recursive: true });
-  console.log(`✓ Créé ${targetDir}`);
+  console.log(`✓ Cree ${targetDir}`);
 }
 
+// --- Step 1: Clean ship-specific files ---
+console.log(`\n🧹 Nettoyage des fichiers ship existants...`);
+
+function removeIfExists(p) {
+  if (!fs.existsSync(p)) return false;
+  const stat = fs.statSync(p);
+  if (stat.isDirectory()) {
+    fs.rmSync(p, { recursive: true, force: true });
+  } else {
+    fs.unlinkSync(p);
+  }
+  console.log(`  ✗ Supprime: ${path.relative(targetDir, p)}`);
+  return true;
+}
+
+// Clean ship commands directory
+removeIfExists(path.join(targetDir, 'commands', 'ship'));
+
+// Clean ship agent files
+const agentsDir = path.join(targetDir, 'agents');
+if (fs.existsSync(agentsDir)) {
+  for (const file of fs.readdirSync(agentsDir)) {
+    if (file.startsWith('ship-') && file.endsWith('.md')) {
+      removeIfExists(path.join(agentsDir, file));
+    }
+  }
+}
+
+// Clean ship skills directories
+const skillsDir = path.join(targetDir, 'skills');
+if (fs.existsSync(skillsDir)) {
+  for (const dir of fs.readdirSync(skillsDir)) {
+    if (dir.startsWith('ship-')) {
+      removeIfExists(path.join(skillsDir, dir));
+    }
+  }
+}
+
+// Clean ship hook files
+const hookFiles = [
+  'validate-frontmatter.js',
+  'check-agent-completion.js',
+  'validate-transition.js',
+];
+for (const file of hookFiles) {
+  removeIfExists(path.join(targetDir, 'hooks', file));
+}
+removeIfExists(path.join(targetDir, 'hooks', 'lib'));
+
+// --- Step 2: Copy with transforms ---
+
 /**
- * Recursively copy a directory, preserving existing files
+ * Recursively copy a directory
  */
-function copyDir(src, dest, options = { preserveExisting: false }) {
+function copyDir(src, dest, options = {}) {
+  const { preserveExisting = false, transformContent = null, skipFiles = [] } = options;
+
   if (!fs.existsSync(src)) {
-    console.log(`⚠ Source non trouvée: ${src}`);
+    console.log(`  ⚠ Source non trouvee: ${src}`);
     return;
   }
 
@@ -63,39 +119,88 @@ function copyDir(src, dest, options = { preserveExisting: false }) {
   const entries = fs.readdirSync(src, { withFileTypes: true });
 
   for (const entry of entries) {
+    if (skipFiles.includes(entry.name)) continue;
+
     const srcPath = path.join(src, entry.name);
     const destPath = path.join(dest, entry.name);
 
     if (entry.isDirectory()) {
       copyDir(srcPath, destPath, options);
     } else {
-      // Check if file already exists
-      if (fs.existsSync(destPath) && options.preserveExisting) {
-        console.log(`  ○ Préservé: ${path.relative(targetDir, destPath)}`);
+      if (fs.existsSync(destPath) && preserveExisting) {
+        console.log(`  ○ Preserve: ${path.relative(targetDir, destPath)}`);
+      } else if (transformContent) {
+        let content = fs.readFileSync(srcPath, 'utf-8');
+        content = transformContent(content);
+        fs.writeFileSync(destPath, content);
+        console.log(`  ✓ Copie (transforme): ${path.relative(targetDir, destPath)}`);
       } else {
         fs.copyFileSync(srcPath, destPath);
-        console.log(`  ✓ Copié: ${path.relative(targetDir, destPath)}`);
+        console.log(`  ✓ Copie: ${path.relative(targetDir, destPath)}`);
       }
     }
   }
 }
 
-// Install each directory
-for (const dir of dirsToInstall) {
-  const srcDir = path.join(sourceDir, dir);
-  const destDir = path.join(targetDir, dir);
+/**
+ * Transform ${CLAUDE_PLUGIN_ROOT} -> .claude in content
+ */
+function transformPluginPaths(content) {
+  return content.replaceAll(PLUGIN_ROOT_VAR, '.claude');
+}
 
-  if (fs.existsSync(srcDir)) {
-    console.log(`\n📁 Installation de ${dir}/`);
-    // For agents, preserve existing files (like GSD)
-    const preserveExisting = dir === 'agents';
-    copyDir(srcDir, destDir, { preserveExisting });
+// Copy commands (direct copy)
+console.log(`\n📁 Installation de commands/`);
+copyDir(
+  path.join(sourceDir, 'commands', 'ship'),
+  path.join(targetDir, 'commands', 'ship')
+);
+
+// Copy agents (transform paths in frontmatter, preserve existing)
+console.log(`\n📁 Installation de agents/`);
+const srcAgentsDir = path.join(sourceDir, 'agents');
+if (fs.existsSync(srcAgentsDir)) {
+  if (!fs.existsSync(path.join(targetDir, 'agents'))) {
+    fs.mkdirSync(path.join(targetDir, 'agents'), { recursive: true });
+  }
+  for (const file of fs.readdirSync(srcAgentsDir)) {
+    if (!file.startsWith('ship-') || !file.endsWith('.md')) continue;
+    const destPath = path.join(targetDir, 'agents', file);
+    if (fs.existsSync(destPath)) {
+      console.log(`  ○ Preserve: agents/${file}`);
+    } else {
+      let content = fs.readFileSync(path.join(srcAgentsDir, file), 'utf-8');
+      content = transformPluginPaths(content);
+      fs.writeFileSync(destPath, content);
+      console.log(`  ✓ Copie (transforme): agents/${file}`);
+    }
   }
 }
 
-// Merge hooks settings into settings.local.json
-const hooksSettingsPath = path.join(sourceDir, 'hooks-settings.json');
-if (fs.existsSync(hooksSettingsPath)) {
+// Copy skills (direct copy)
+console.log(`\n📁 Installation de skills/`);
+const srcSkillsDir = path.join(sourceDir, 'skills');
+if (fs.existsSync(srcSkillsDir)) {
+  for (const dir of fs.readdirSync(srcSkillsDir)) {
+    if (!dir.startsWith('ship-')) continue;
+    copyDir(
+      path.join(srcSkillsDir, dir),
+      path.join(targetDir, 'skills', dir)
+    );
+  }
+}
+
+// Copy hooks (direct copy, skip hooks.json)
+console.log(`\n📁 Installation de hooks/`);
+copyDir(
+  path.join(sourceDir, 'hooks'),
+  path.join(targetDir, 'hooks'),
+  { skipFiles: ['hooks.json'] }
+);
+
+// --- Step 3: Generate hook settings from hooks/hooks.json ---
+const hooksJsonPath = path.join(sourceDir, 'hooks', 'hooks.json');
+if (fs.existsSync(hooksJsonPath)) {
   const settingsPath = path.join(targetDir, 'settings.local.json');
   let settings = {};
 
@@ -103,31 +208,39 @@ if (fs.existsSync(hooksSettingsPath)) {
     try {
       settings = JSON.parse(fs.readFileSync(settingsPath, 'utf-8'));
     } catch {
-      console.log(`  ⚠ settings.local.json existant non parseable, hooks non injectés`);
+      console.log(`  ⚠ settings.local.json existant non parseable, hooks non injectes`);
       settings = null;
     }
   }
 
   if (settings !== null) {
-    const hooksSettings = JSON.parse(fs.readFileSync(hooksSettingsPath, 'utf-8'));
-    settings.hooks = hooksSettings.hooks;
+    const hooksConfig = JSON.parse(fs.readFileSync(hooksJsonPath, 'utf-8'));
+    // Transform plugin root paths to .claude for standalone mode
+    const transformed = JSON.parse(
+      JSON.stringify(hooksConfig.hooks).replaceAll(PLUGIN_ROOT_VAR, '.claude')
+    );
+    settings.hooks = transformed;
     fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2) + '\n');
-    console.log(`\n🔧 Hooks injectés dans settings.local.json`);
+    console.log(`\n🔧 Hooks injectes dans settings.local.json`);
   }
 }
 
 // Summary
 console.log(`
-✅ Installation terminée!
+✅ Installation terminee! (standalone mode)
 
 Commandes disponibles dans Claude Code:
   /ship:help         Liste des commandes ship
   /ship:init         Initialise un nouveau projet
-  /ship:next         Démarre ou reprend le workflow
-  /ship:status       Affiche l'état du projet
+  /ship:next         Demarre ou reprend le workflow
+  /ship:status       Affiche l'etat du projet
+
+💡 Mode plugin recommande:
+   Pour une mise a jour automatique, utilisez plutot:
+   claude plugin install cc-ship
 
 Pour commencer:
-  1. Ouvre Claude Code dans ce répertoire
+  1. Ouvre Claude Code dans ce repertoire
   2. Tape /ship:init mon-projet pour initialiser un projet
   3. Tape /ship:next pour lancer le workflow
 `);

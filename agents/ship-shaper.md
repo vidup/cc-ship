@@ -9,7 +9,7 @@ hooks:
     - matcher: "Write|Edit"
       hooks:
         - type: command
-          command: "node .claude/hooks/validate-transition.js --agent=shaper"
+          command: "node \"${CLAUDE_PLUGIN_ROOT}/hooks/validate-transition.js\" --agent=shaper"
 ---
 
 # Agent Shaper
