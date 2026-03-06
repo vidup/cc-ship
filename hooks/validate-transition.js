@@ -31,6 +31,11 @@ const VALID_TRANSITIONS = {
     ['verifying', 'done'],
     ['verifying', 'executing'],
   ],
+  amender: [
+    ['executing', 'shaped'],
+    ['executed', 'shaped'],
+    ['done', 'shaped'],
+  ],
 };
 
 function getAgentArg() {

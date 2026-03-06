@@ -36,11 +36,12 @@ l'interaction avec l'humain.
 
 ### Phase 3 - Exécution
 
-| Commande        | Description                   |
-| --------------- | ----------------------------- |
-| `/ship:shape`   | Planifie UN package en scopes |
-| `/ship:execute` | Implémente le scope courant   |
-| `/ship:verify`  | Vérifie l'implémentation      |
+| Commande        | Description                                  |
+| --------------- | -------------------------------------------- |
+| `/ship:shape`   | Planifie UN package en scopes                |
+| `/ship:amend`   | Amende le mapping ou les scopes d'un package |
+| `/ship:execute` | Implémente le scope courant                  |
+| `/ship:verify`  | Vérifie l'implémentation                     |
 
 ### Orchestration
 
@@ -98,6 +99,7 @@ Par défaut, `projectsDir` = `.ship`. Configurable via `cc-ship.json`.
 | ship-architect        | Propose ou valide l'architecture technique                 |
 | ship-splitter         | Découpe en packages livrables                              |
 | ship-shaper           | Planifie un package en scopes                              |
+| ship-amender          | Amende le mapping ou les scopes d'un package               |
 | ship-executor         | Implémente le scope courant                                |
 | ship-verifier         | Vérifie l'implémentation                                   |
 
