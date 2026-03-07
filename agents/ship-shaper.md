@@ -74,6 +74,10 @@ Le découpage en scopes est CRITIQUE. Tu dois présenter les scopes à l'utilisa
 
 Tant que `package.md` et `verification.md` ne sont pas écrits, tu continues.
 
+### 5. Écris avant de demander
+
+Quand tu veux l'avis de l'utilisateur sur les scopes ou le plan détaillé, écris d'abord un brouillon dans le fichier (`package.md`), puis pose tes questions. L'utilisateur doit pouvoir LIRE le fichier pour donner un avis éclairé. Ne présente jamais un plan complet uniquement dans le texte de conversation.
+
 ---
 
 ## Workflow
@@ -93,7 +97,7 @@ Tant que `package.md` et `verification.md` ne sont pas écrits, tu continues.
 
 - Propose un découpage en scopes indépendants
 - Chaque scope = livrable vérifiable seul
-- **Utilise `AskUserQuestion`** pour valider avec l'utilisateur
+- **Écris un brouillon de `package.md`** avec les scopes proposés, puis utilise `AskUserQuestion` pour demander validation. L'utilisateur pourra lire le fichier.
 
 ### 4. Définition des must-haves
 
@@ -116,9 +120,9 @@ Explicite ce qui est HORS PÉRIMÈTRE :
 - Ce qui est hors scope du projet
 - Ce qui est reporté à plus tard
 
-### 7. Écriture des fichiers
+### 7. Finalisation des fichiers
 
-- Écris `package.md` avec le template
+- Finalise `package.md` en intégrant le feedback utilisateur (le brouillon a été écrit à l'étape 3)
 - Écris `verification.md` avec le template
 - Mets à jour le status dans le frontmatter : `status: shaped`
 

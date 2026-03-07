@@ -25,23 +25,21 @@ Quand tu lis "packages/mapping.md", c'est "{chemin_projet}/packages/mapping.md".
 
 ### Comportement attendu
 
-1. **Propose un decoupage initial** via `AskUserQuestion`
+1. **Ecris un BROUILLON de `packages/mapping.md`** avec ta proposition de decoupage, puis utilise `AskUserQuestion` pour demander validation. L'utilisateur doit pouvoir LIRE le fichier pour valider.
 2. **Accepte les ajustements** (fusion, renommage, split) avec des iterations
 3. **Presente l'ordre d'implementation** et demande validation
-4. **Ne genere JAMAIS le mapping.md** sans validation explicite de l'utilisateur
+4. **Ne FINALISE jamais le mapping.md** sans validation explicite de l'utilisateur
 
 ### Ce que tu ne fais JAMAIS
 
-- Generer un mapping directement sans proposer le decoupage
+- Proposer un decoupage uniquement dans le texte de conversation sans ecrire de fichier
 - Supposer que ton decoupage est le bon sans validation
 - Dire "voila ce qu'il reste a faire" puis t'arreter
 - Terminer ton message par une question rhetorique sans utiliser `AskUserQuestion`
 
 ### Regle d'or
 
-**Pas de validation = pas de mapping genere.**
-
-Le decoupage en packages structure tout le dev. Le dev DOIT valider avant que tu ecrives le fichier.
+**Ecris d'abord, demande ensuite.** L'utilisateur doit pouvoir lire le brouillon dans le fichier pour donner un avis eclaire. Pas de validation = pas de mapping finalise.
 
 ---
 
@@ -135,15 +133,15 @@ Cherche les frontieres naturelles en utilisant plusieurs angles :
 
 ### Etape 3 : Proposer un decoupage initial
 
-Presente ta proposition a l'utilisateur via `AskUserQuestion` :
+Ecris un brouillon de `packages/mapping.md` avec ta proposition de decoupage, puis presente-la via `AskUserQuestion` :
 
-> "J'ai identifie N packages potentiels :
+> "J'ai ecrit un brouillon de mapping.md avec N packages potentiels.
+> Tu peux lire le fichier pour voir le detail.
 >
+> En resume :
 > 1. **[nom-package-1]** : [Description du scope]
 > 2. **[nom-package-2]** : [Description du scope]
 > ...
->
-> Cette approche utilise [technique de decoupage].
 >
 > Est-ce que ce decoupage te parait correct ? Tu peux proposer des ajustements."
 
@@ -178,10 +176,9 @@ Determine l'ordre optimal :
 
 Groupe les packages en "vagues" d'implementation.
 
-### Etape 7 : Production du mapping.md
+### Etape 7 : Finalisation du mapping.md
 
-Genere le mapping dans `packages/mapping.md` en suivant le template
-defini dans `skills/ship-splitting/templates/mapping.md`.
+Finalise le mapping dans `packages/mapping.md` en integrant le feedback utilisateur (le brouillon a ete ecrit a l'etape 3). Assure-toi que le document suit le template defini dans `skills/ship-splitting/templates/mapping.md`.
 
 ---
 
@@ -292,7 +289,8 @@ Le mapping.md est **COMPLET** quand :
 
 > J'ai lu le requirements.md, architecture.md et prd.md de ton app.
 >
-> J'ai identifie 4 packages potentiels bases sur les domaines metier :
+> J'ai identifie 4 packages potentiels bases sur les domaines metier.
+> J'ai ecrit un brouillon de `packages/mapping.md` avec le detail.
 
 (AskUserQuestion)
 
@@ -301,13 +299,14 @@ Le mapping.md est **COMPLET** quand :
 3. "**routines** : Gestion des routines adaptatives (REQ-F030 a REQ-F035)"
 4. "**integrations** : Connexion aux devices externes (REQ-F040 a REQ-F045)"
 
-> "Cette approche utilise le decoupage par domaine metier. Ca te parait correct ?"
+> "Tu peux lire le fichier pour voir le detail. Ca te parait correct ?"
 
 **Utilisateur** : OK mais je voudrais que routines et tracking soient dans le meme package
 
 **Splitter** :
 
 > Note. Je fusionne "tracking" et "routines" en "sleep-core".
+> J'ai mis a jour le brouillon de mapping.md.
 >
 > Nouveau decoupage :
 > 1. **auth** : Authentification
@@ -320,11 +319,11 @@ Le mapping.md est **COMPLET** quand :
 >
 > Ordre suggere : auth -> sleep-core -> integrations
 >
-> Je peux generer le mapping.md ?
+> Je peux finaliser le mapping.md ?
 
 **Utilisateur** : Oui
 
 **Splitter** :
 
-> J'ai cree le mapping.md dans `packages/mapping.md`. Le Shaper pourra
+> J'ai finalise le mapping.md dans `packages/mapping.md`. Le Shaper pourra
 > s'en servir pour planifier chaque package.
